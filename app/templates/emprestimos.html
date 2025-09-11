@@ -38,7 +38,7 @@
                     <td>{{ emprestimo.aluno.nome }} {{ emprestimo.aluno.sobrenome }}</td>
                     <td>{{ emprestimo.data_aluguel.strftime('%d/%m/%Y') }}</td>
                     <td>
-                        {{ emprestimo.data_limite_formatada }}
+                        {{ emprestimo.data_devolucao }}
                         {% if emprestimo.atrasado %}
                             <span class="badge bg-danger">ATRASADO</span>
                         {% endif %}

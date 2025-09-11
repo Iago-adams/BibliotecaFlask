@@ -2,7 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, PasswordField, IntegerField, SelectField
 from wtforms.validators import DataRequired, EqualTo, Length, NumberRange, ValidationError
 from app import bcrypt, db
-from app.models import User, Aluno, Livro
+from app.models import User, Aluno
 from flask import flash
 
 class UserForm(FlaskForm):

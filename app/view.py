@@ -59,7 +59,7 @@ def listar_livros():
 
 # ROTA PARA CADASTRAR UM NOVO LIVRO
 @app.route('/livros/cadastrar', methods=['GET', 'POST'])
-@login_required
+@login_required 
 def cadastrar_livro():
     form = LivroForm()
     if form.validate_on_submit():
@@ -203,7 +203,7 @@ def excluir_aluno(id):
 @login_required
 def listar_emprestimos():
     # Buscamos apenas os aluguéis que ainda não foram devolvidos
-    emprestimos_ativos = Aluguel.query.filter_by(data_devolucao=None).all()
+    emprestimos_ativos = Aluguel.query.filter_by(emprestimo_ativo=True).all()
     return render_template('emprestimos.html', emprestimos=emprestimos_ativos)
 
 @app.route('/emprestimos/novo', methods=['GET', 'POST'])
@@ -219,6 +219,7 @@ def novo_emprestimo():
     if form.validate_on_submit():
         livro_id = form.livro.data
         aluno_id = form.aluno.data
+        data_aluguel = datetime.now()
 
         livro = Livro.query.get(livro_id)
         
@@ -228,9 +229,9 @@ def novo_emprestimo():
         novo_aluguel = Aluguel(
             id_livro=livro_id,
             id_aluno=aluno_id,
-            data_aluguel=datetime.now(),
+            data_aluguel=data_aluguel,
             # A data de devolução fica nula até o livro ser devolvido
-            data_devolucao=None 
+            data_devolucao=data_aluguel+timedelta(weeks=1)
         )
         
         db.session.add(novo_aluguel)
@@ -247,8 +248,14 @@ def devolver_livro(id):
     
     # Lógica de negócio: aumentar o número de exemplares
     aluguel.livro.exemplares += 1
-    
+    aluguel.emprestimo_ativo = False
     aluguel.data_devolucao = datetime.now()
     db.session.commit()
     flash('Livro devolvido com sucesso!', 'info')
     return redirect(url_for('listar_emprestimos'))
+
+@app.route('/historico', methods=['GET'])
+@login_required
+def ver_livros():
+    emprestimos = Aluguel.query.all()
+    return render_template('historico.html', emprestimos=emprestimos)

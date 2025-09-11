@@ -36,3 +36,4 @@ class Aluguel(db.Model):
     id_aluno = db.Column(db.Integer, db.ForeignKey('aluno.id'))
     data_aluguel = db.Column(db.DateTime, default=datetime.now)
     data_devolucao = db.Column(db.Date, nullable=True)
+    emprestimo_ativo = db.Column(db.Boolean, default=True)
