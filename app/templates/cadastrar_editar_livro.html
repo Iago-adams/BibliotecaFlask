@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h3>{{ title }}</h3>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="" novalidate>
+                        {{ form.csrf_token }}
+
+                        <div class="mb-3">
+                            {{ form.titulo.label(class="form-label") }}
+                            {{ form.titulo(class="form-control") }}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.autor.label(class="form-label") }}
+                            {{ form.autor(class="form-control") }}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.editora.label(class="form-label") }}
+                            {{ form.editora(class="form-control") }}
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                {{ form.ano_publicacao.label(class="form-label") }}
+                                {{ form.ano_publicacao(class="form-control") }}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                {{ form.genero.label(class="form-label") }}
+                                {{ form.genero(class="form-control") }}
+                            </div>
+                        </div>
+                         <div class="mb-3">
+                            {{ form.exemplares.label(class="form-label") }}
+                            {{ form.exemplares(class="form-control") }}
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a href="{{ url_for('listar_livros') }}" class="btn btn-secondary me-md-2">Cancelar</a>
+                            {{ form.btnSubmit(class="btn btn-primary") }}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

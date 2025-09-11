@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1>Empréstimos Ativos</h1>
+        <a href="{{ url_for('novo_emprestimo') }}" class="btn btn-primary">Registrar Novo Empréstimo</a>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col">Livro</th>
+                    <th scope="col">Aluno</th>
+                    <th scope="col">Data do Empréstimo</th>
+                    <th scope="col">Prazo para Devolução</th>
+                    <th scope="col" class="text-center">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for emprestimo in emprestimos %}
+                <!-- Adiciona a classe 'table-danger' se o empréstimo estiver atrasado -->
+                <tr class="{{ 'table-danger' if emprestimo.atrasado }}">
+                    <td>{{ emprestimo.livro.titulo }}</td>
+                    <td>{{ emprestimo.aluno.nome }} {{ emprestimo.aluno.sobrenome }}</td>
+                    <td>{{ emprestimo.data_aluguel.strftime('%d/%m/%Y') }}</td>
+                    <td>
+                        {{ emprestimo.data_limite_formatada }}
+                        {% if emprestimo.atrasado %}
+                            <span class="badge bg-danger">ATRASADO</span>
+                        {% endif %}
+                    </td>
+                    <td class="text-center">
+                        <form action="{{ url_for('devolver_livro', id=emprestimo.id) }}" method="POST">
+                            <button type="submit" class="btn btn-success btn-sm">Marcar como Devolvido</button>
+                        </form>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="5" class="text-center">Nenhum livro emprestado no momento.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

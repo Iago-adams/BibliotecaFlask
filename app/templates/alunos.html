@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1>Gestão de Alunos</h1>
+        <a href="{{ url_for('cadastrar_aluno') }}" class="btn btn-primary">Adicionar Novo Aluno</a>
+    </div>
+
+    <!-- Barra de Busca -->
+    <div class="mb-4">
+        <form method="GET" action="{{ url_for('listar_alunos') }}">
+            <div class="input-group">
+                <input type="text" name="q" class="form-control" placeholder="Buscar por nome, sobrenome, CPF..." value="{{ request.args.get('q', '') }}">
+                <button class="btn btn-outline-secondary" type="submit">Buscar</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Tabela de Alunos -->
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col">Nome Completo</th>
+                    <th scope="col">CPF</th>
+                    <th scope="col" class="text-center">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for aluno in alunos %}
+                <tr>
+                    <td>{{ aluno.nome }} {{ aluno.sobrenome }}</td>
+                    <td>{{ aluno.cpf }}</td>
+                    <td class="text-center">
+                        <a href="{{ url_for('editar_aluno', id=aluno.id) }}" class="btn btn-warning btn-sm">Editar</a>
+                        
+                        <form action="{{ url_for('excluir_aluno', id=aluno.id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Tem certeza que deseja excluir este aluno?');">
+                            <button type="submit" class="btn btn-danger btn-sm">Excluir</button>
+                        </form>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="3" class="text-center">Nenhum aluno encontrado.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

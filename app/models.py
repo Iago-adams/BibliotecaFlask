@@ -15,17 +15,19 @@ class User(db.Model, UserMixin):
 
 class Livro(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    titulo = db.Column(db.String)
-    autor = db.Column(db.String)
-    editora = db.Column(db.String)
-    publicacao = db.Column(db.DateTime)
-    genero = db.Column(db.String)
-    numeroDisponiveis = db.Column(db.Integer)
+    titulo = db.Column(db.String(100), nullable=False)
+    autor = db.Column(db.String(100), nullable=False)
+    editora = db.Column(db.String(100), nullable=False)
+    ano_publicacao = db.Column(db.Integer, nullable=False) 
+    genero = db.Column(db.String(50), nullable=False)
+    exemplares = db.Column(db.Integer, nullable=False)
     alunosAlugados = db.relationship('Aluguel', backref='livro', lazy=True)
     
 class Aluno(db.Model):
-    id = db.Column(db.Integer, primary_key=True)    
-    cpf = db.Column(db.String, unique=True)
+    id = db.Column(db.Integer, primary_key=True)
+    nome = db.Column(db.String(100), nullable=False)
+    sobrenome = db.Column(db.String(100), nullable=False)
+    cpf = db.Column(db.String(14), unique=True, nullable=False)
     livrosEmprestados = db.relationship('Aluguel', backref='aluno', lazy=True)
     
 class Aluguel(db.Model):
