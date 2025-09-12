@@ -6,6 +6,7 @@ from app.models import Livro, Aluno, Aluguel
 from sqlalchemy import or_, func, desc
 from datetime import datetime, timedelta
 
+#ROTA PARA A PAGINA PRINCIPAL
 @app.route('/', methods=['GET', 'POST'])
 def homepage():
     form = LoginForm()
@@ -17,6 +18,7 @@ def homepage():
     
     return render_template('index.html', form=form)
 
+# ROTA PARA CADASTRA UMA CONTA DE FUNCIONARIO
 @app.route("/cadastrar", methods=['GET', 'POST'])
 def cadastrar():
     form = UserForm()
@@ -26,6 +28,7 @@ def cadastrar():
         return redirect(url_for('homepage'))
     return render_template('cadastrar.html', form=form)
 
+# ROTA PARA DAR LOGOUT
 @app.route('/sair')
 @login_required
 def logout():
@@ -36,12 +39,9 @@ def logout():
 @app.route('/livros')
 @login_required
 def listar_livros():
-    # Pega o termo de busca da URL (ex: /livros?q=Aventura)
     query = request.args.get('q')
     
     if query:
-        # Se houver uma busca, filtra os livros por título, autor ou gênero
-        # O 'ilike' faz a busca ser case-insensitive (não diferencia maiúsculas de minúsculas)
         search = f"%{query}%"
         livros = Livro.query.filter(
             or_(
@@ -51,7 +51,6 @@ def listar_livros():
             )
         ).all()
     else:
-        # Se não houver busca, lista todos os livros
         livros = Livro.query.all()
         
     return render_template('livros.html', livros=livros)

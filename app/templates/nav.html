@@ -1,7 +1,7 @@
 <nav class="navbar">
-    <a href="{{url_for('homepage')}}" class="btn btn-dark">Home</a>
-    <a href="{{url_for('listar_livros')}}" class="btn btn-primary">Gestão de Livros</a>
-    <a href="{{url_for('listar_alunos')}}" class="btn btn-primary">Gestão de Alunos</a>
-    <a class="nav-link" href="{{ url_for('listar_emprestimos') }}">Empréstimos</a>
-    <a class="nav-link" href="{{ url_for('ver_livros') }}">Relatório</a>
+    <a href="{{url_for('homepage')}}" class="btn btn-primary">Home</a>
+    <a href="{{url_for('listar_livros')}}" class="btn btn-secondary">Gestão de Livros</a>
+    <a href="{{url_for('listar_alunos')}}" class="btn btn-secondary">Gestão de Alunos</a>
+    <a href="{{ url_for('listar_emprestimos') }}" class="btn btn-secondary">Empréstimos</a>
+    <a href="{{ url_for('ver_livros') }}" class="btn btn-secondary">Relatório</a>
 </nav>  

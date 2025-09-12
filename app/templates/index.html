@@ -3,7 +3,7 @@
     <div>
         {% if current_user.is_authenticated  %}
         <h2>Bem-vindo, {{ current_user.nome }}!</h2>
-        <span class="btn btn-primary">{{current_user.nome}} {{current_user.nome}}</span>
+        <span class="btn btn-dark">{{current_user.nome}} {{current_user.nome}}</span>
         <a href="{{url_for('logout')}}" class="btn btn-danger">Sair</a>
         {% else %}
         <form action="" method="post" class="row">
